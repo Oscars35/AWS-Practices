@@ -158,3 +158,23 @@ Resources:
       Handler: delete.handler
       CodeUri: dist/practice2
       Role: !GetAtt LambdaDeleteDynamodbRole.Arn
+
+  EventBridge:
+    Type: AWS::Events::EventBus
+    Properties:
+      Name: !Sub '${AWS::StackName}-event-bus'
+
+  PlayerOneRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: "player-one-rule"
+      EventBusName: !GetAtt EventBridge.Arn
+      EventPattern:
+        source:
+          - "player2"
+      Name: !Sub '${AWS::StackName}-player-one-rule'
+      #RoleArn: String
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt HelloWorldLambda.Arn
+          Id: "player-one-lambda"

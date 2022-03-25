@@ -3,6 +3,6 @@
     "Source": "player2",
     "DetailType": "ping-pong-event",
     "Detail": "{ \"round\": \"start\" }",
-    "EventBusName": "jordi-sapes-event-bridge"
+    "EventBusName": "oscar-salcedo-event-bus"
   }
 ]
