@@ -162,19 +162,27 @@ Resources:
   EventBridge:
     Type: AWS::Events::EventBus
     Properties:
-      Name: !Sub '${AWS::StackName}-event-bus'
+      Name: !Sub '${AWS::StackName}-event-bridge'
 
   PlayerOneRule:
     Type: AWS::Events::Rule
     Properties:
-      Description: "player-one-rule"
+      Description: 'player-one-rule'
       EventBusName: !GetAtt EventBridge.Arn
       EventPattern:
         source:
-          - "player2"
+          - 'player2'
       Name: !Sub '${AWS::StackName}-player-one-rule'
-      #RoleArn: String
       State: ENABLED
       Targets:
         - Arn: !GetAtt HelloWorldLambda.Arn
-          Id: "player-one-lambda"
+          Id: 'HelloWorldLambda'
+
+  PermissionForEvent:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Ref: "HelloWorldLambda"
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: !GetAtt PlayerOneRule.Arn
