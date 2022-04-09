@@ -1,7 +1,6 @@
 import {EventBridge} from "aws-sdk";
 
 const handler = async(event: any, _context: any) => {
-    //Event is the data, context the function
     let newRound = checkParameters(event)
     if(newRound == 10) throw new Error("Finish!")
     await putNewEvent(newRound)
@@ -17,7 +16,7 @@ function putNewEvent(newRound: Number) {
     return eventBridge.putEvents({
         Entries: [
             {
-                Source: 'player1',
+                Source: 'player2',
                 DetailType: 'ping-pong-event',
                 Detail: String({round : newRound}),
                 EventBusName: 'oscar-salcedo-event-bridge',
@@ -38,6 +37,6 @@ function changeRound(event: any) {
 }
 
 function checkSource(event: any) {
-    if(event.source != "player2") console.log("BAD SOURCE!")
+    if(event.source != "player1") console.log("BAD SOURCE!")
 }
 export {handler}

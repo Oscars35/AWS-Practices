@@ -178,7 +178,21 @@ Resources:
         - Arn: !GetAtt PlayerOneLambda.Arn
           Id: 'PlayerOneLambda'
 
-  PermissionForEvent:
+  PlayerTwoRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: 'player-two-rule'
+      EventBusName: !GetAtt EventBridge.Arn
+      EventPattern:
+        source:
+          - 'player1'
+      Name: !Sub '${AWS::StackName}-player-two-rule'
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt PlayerTwoLambda.Arn
+          Id: 'PlayerTwoLambda'
+
+  PermissionForEventPlayerOne:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName:
@@ -187,10 +201,39 @@ Resources:
       Principal: "events.amazonaws.com"
       SourceArn: !GetAtt PlayerOneRule.Arn
 
+  PermissionForEventPlayerTwo:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        Ref: "PlayerTwoLambda"
+      Action: "lambda:InvokeFunction"
+      Principal: "events.amazonaws.com"
+      SourceArn: !GetAtt PlayerTwoRule.Arn
+
   PlayerOneLambda:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub '${AWS::StackName}-player-one-lambda'
       Handler: playerOne.handler
       CodeUri: dist/practice3
-      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: nodejs12.x
+      Policies:
+          - Statement:
+            - Effect: Allow
+              Resource: '*'
+              Action:
+                - events:PutEvents
+
+  PlayerTwoLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-player-two-lambda'
+      Handler: playerTwo.handler
+      CodeUri: dist/practice3
+      Runtime: nodejs12.x
+      Policies:
+          - Statement:
+            - Effect: Allow
+              Resource: '*'
+              Action:
+                - events:PutEvents

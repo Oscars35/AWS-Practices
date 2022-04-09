@@ -18,7 +18,7 @@ function putNewEvent(newRound) {
     return eventBridge.putEvents({
         Entries: [
             {
-                Source: 'player1',
+                Source: 'player2',
                 DetailType: 'ping-pong-event',
                 Detail: String({ round: newRound }),
                 EventBusName: 'oscar-salcedo-event-bridge',
@@ -37,7 +37,7 @@ function changeRound(event) {
     }
 }
 function checkSource(event) {
-    if (event.source != "player2")
+    if (event.source != "player1")
         console.log("BAD SOURCE!");
 }
-//# sourceMappingURL=playerOne.js.map
+//# sourceMappingURL=playerTwo.js.map
