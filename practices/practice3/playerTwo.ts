@@ -1,10 +1,8 @@
 import {EventBridge} from "aws-sdk";
-import {generateRandomInt} from "./utils";
 
 const handler = async(event: any, _context: any) => {
     let newRound = checkParameters(event)
     let shot = generateRandomInt()
-    console.log(shot)
     if (shot > 7) throw new Error("Finished Game!, Player 2 Lost")
     if (newRound > 10) throw new Error("Game finished, more than 10 rounds done")
     await putNewEvent(newRound)
@@ -45,4 +43,9 @@ function changeRound(event: any) {
 function checkSource(event: any) {
     if(event.source != "player1") console.log("BAD SOURCE!")
 }
+
+function generateRandomInt(): Number {
+    return Math.floor(Math.random() * (10 - 0 + 1) + 0)
+}
+
 export {handler}

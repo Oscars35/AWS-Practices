@@ -2,11 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
 const aws_sdk_1 = require("aws-sdk");
-const utils_1 = require("./utils");
 const handler = async (event, _context) => {
     let newRound = checkParameters(event);
-    let shot = (0, utils_1.generateRandomInt)();
-    console.log(shot);
+    let shot = generateRandomInt();
     if (shot > 7)
         throw new Error("Finished Game!, Player 2 Lost");
     if (newRound > 10)
@@ -46,5 +44,8 @@ function changeRound(event) {
 function checkSource(event) {
     if (event.source != "player1")
         console.log("BAD SOURCE!");
+}
+function generateRandomInt() {
+    return Math.floor(Math.random() * (10 - 0 + 1) + 0);
 }
 //# sourceMappingURL=playerTwo.js.map
