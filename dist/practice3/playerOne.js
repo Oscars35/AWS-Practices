@@ -2,10 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handler = void 0;
 const aws_sdk_1 = require("aws-sdk");
+const utils_1 = require("./utils");
 const handler = async (event, _context) => {
     let newRound = checkParameters(event);
-    if (newRound == 10)
-        throw new Error("Finish!");
+    let shot = (0, utils_1.generateRandomInt)();
+    console.log(shot);
+    if (shot > 7)
+        throw new Error("Finished Game!, Player 1 Lost");
+    if (newRound > 10)
+        throw new Error("Game finished, more than 10 rounds done");
     await putNewEvent(newRound);
 };
 exports.handler = handler;
