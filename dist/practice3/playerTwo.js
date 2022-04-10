@@ -20,7 +20,9 @@ function putNewEvent(newRound) {
             {
                 Source: 'player2',
                 DetailType: 'ping-pong-event',
-                Detail: String({ round: newRound }),
+                Detail: JSON.stringify({
+                    round: newRound
+                }),
                 EventBusName: 'oscar-salcedo-event-bridge',
             },
         ]
